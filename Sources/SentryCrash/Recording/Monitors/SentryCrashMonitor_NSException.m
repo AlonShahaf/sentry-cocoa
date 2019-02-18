@@ -104,6 +104,7 @@ static void handleException(NSException* exception, BOOL currentSnapshotUserRepo
         if (g_previousUncaughtExceptionHandler != NULL)
         {
             SentryCrashLOG_DEBUG(@"Calling original exception handler.");
+            NSLog(@"Sentry - calling previous handler");
             g_previousUncaughtExceptionHandler(exception);
         }
     }
@@ -123,25 +124,26 @@ static void handleUncaughtException(NSException* exception) {
 
 static void setEnabled(bool isEnabled)
 {
-    if(isEnabled != g_isEnabled)
-    {
-        g_isEnabled = isEnabled;
-        if(isEnabled)
-        {
-            SentryCrashLOG_DEBUG(@"Backing up original handler.");
-            g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
-
-            SentryCrashLOG_DEBUG(@"Setting new handler.");
-            NSSetUncaughtExceptionHandler(&handleUncaughtException);
-            SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
-            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
-        }
-        else
-        {
-            SentryCrashLOG_DEBUG(@"Restoring original handler.");
-            NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
-        }
-    }
+//    if(isEnabled != g_isEnabled)
+//    {
+//        g_isEnabled = isEnabled;
+//        if(isEnabled)
+//        {
+//            SentryCrashLOG_DEBUG(@"Backing up original handler.");
+//            g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
+//
+//            SentryCrashLOG_DEBUG(@"Setting new handler.");
+//            NSSetUncaughtExceptionHandler(&handleUncaughtException);
+//            SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
+//            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
+//        }
+//        else
+//        {
+//            SentryCrashLOG_DEBUG(@"Restoring original handler.");
+//            NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
+//        }
+//    }
+    SentryCrashLOG_WARN(@"Sentry: IGNORING setEnabled()");
 }
 
 static bool isEnabled()
