@@ -220,6 +220,12 @@ NS_SWIFT_NAME(send(event:completion:));
  */
 - (void)appendStacktraceToEvent:(SentryEvent *)event;
 
+/** Wether to set the exception handler.
+ *
+ * @param isEnabled true (default) sets the exception handler
+ */
+- (void) setExceptionHanderEnabled:(BOOL) isEnabled;
+
 @end
 
 NS_ASSUME_NONNULL_END

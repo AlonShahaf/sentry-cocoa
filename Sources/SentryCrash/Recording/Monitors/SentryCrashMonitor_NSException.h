@@ -43,8 +43,8 @@ extern "C" {
 /** Access the Monitor API.
  */
 SentryCrashMonitorAPI* sentrycrashcm_nsexception_getAPI(void);
-
-
+void setUncaughtExceptionHanderEnabled(bool isEnabled);
+    
 #ifdef __cplusplus
 }
 #endif

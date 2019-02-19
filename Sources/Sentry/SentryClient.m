@@ -393,6 +393,11 @@ withCompletionHandler:(_Nullable SentryRequestOperationFinished)completionHandle
     return SentryCrash.sharedInstance.crashedLastLaunch;
 }
 
+- (void) setExceptionHanderEnabled:(BOOL)isEnabled
+{
+    [SentryCrash.sharedInstance setExceptionHanderEnabled:isEnabled];
+}
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 - (BOOL)startCrashHandlerWithError:(NSError *_Nullable *_Nullable)error {

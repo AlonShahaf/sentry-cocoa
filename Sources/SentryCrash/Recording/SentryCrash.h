@@ -286,6 +286,12 @@ typedef enum
                logAllThreads:(BOOL) logAllThreads
             terminateProgram:(BOOL) terminateProgram;
 
+/** Wether to set the exception handler.
+ *
+ * @param isEnabled true (default) sets the exception handler
+ */
+- (void) setExceptionHanderEnabled:(BOOL) isEnabled;
+
 @end
 
 

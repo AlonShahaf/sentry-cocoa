@@ -41,6 +41,7 @@
 // ============================================================================
 
 static volatile bool g_isEnabled = 0;
+static volatile bool g_isSetExceptionHanderEnabled = 1;
 
 static SentryCrash_MonitorContext g_monitorContext;
 
@@ -124,31 +125,40 @@ static void handleUncaughtException(NSException* exception) {
 
 static void setEnabled(bool isEnabled)
 {
-//    if(isEnabled != g_isEnabled)
-//    {
-//        g_isEnabled = isEnabled;
-//        if(isEnabled)
-//        {
-//            SentryCrashLOG_DEBUG(@"Backing up original handler.");
-//            g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
-//
-//            SentryCrashLOG_DEBUG(@"Setting new handler.");
-//            NSSetUncaughtExceptionHandler(&handleUncaughtException);
-//            SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
-//            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
-//        }
-//        else
-//        {
-//            SentryCrashLOG_DEBUG(@"Restoring original handler.");
-//            NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
-//        }
-//    }
-    SentryCrashLOG_WARN(@"Sentry: IGNORING setEnabled()");
+    if (!g_isSetExceptionHanderEnabled)
+    {
+        SentryCrashLOG_WARN(@"SetExceptionHandler is disabled.");
+        return;
+    }
+    if(isEnabled != g_isEnabled)
+    {
+        g_isEnabled = isEnabled;
+        if(isEnabled)
+        {
+            SentryCrashLOG_DEBUG(@"Backing up original handler.");
+            g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
+
+            SentryCrashLOG_DEBUG(@"Setting new handler.");
+            NSSetUncaughtExceptionHandler(&handleUncaughtException);
+            SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
+            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
+        }
+        else
+        {
+            SentryCrashLOG_DEBUG(@"Restoring original handler.");
+            NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
+        }
+    }
 }
 
 static bool isEnabled()
 {
     return g_isEnabled;
+}
+
+void setUncaughtExceptionHanderEnabled(bool isEnabled)
+{
+    g_isSetExceptionHanderEnabled = isEnabled;
 }
 
 SentryCrashMonitorAPI* sentrycrashcm_nsexception_getAPI()

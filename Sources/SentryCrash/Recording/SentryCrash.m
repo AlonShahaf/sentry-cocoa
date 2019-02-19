@@ -40,6 +40,7 @@
 //#define SentryCrashLogger_LocalLevel TRACE
 #import "SentryCrashLogger.h"
 
+#include <SentryCrashMonitor_NSException.h>
 #include <inttypes.h>
 #if SentryCrashCRASH_HAS_UIKIT
 #import <UIKit/UIKit.h>
@@ -550,6 +551,11 @@ SYNTHESIZE_CRASH_STATE_PROPERTY(BOOL, crashedLastLaunch)
 {
     _printPreviousLog = shouldPrintPreviousLog;
     sentrycrash_setPrintPreviousLog(shouldPrintPreviousLog);
+}
+
+- (void) setExceptionHanderEnabled:(BOOL)isEnabled
+{
+    setUncaughtExceptionHanderEnabled(isEnabled);
 }
 
 
